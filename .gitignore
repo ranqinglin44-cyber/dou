@@ -1,0 +1,48 @@
+# 编译产物
+*.exe
+*.dll
+*.pdb
+*.obj
+*.bin
+*.obj
+
+# 压缩包（保留发布用的）
+# AccountManager*.zip
+
+# IDE 配置
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+
+# 系统文件
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# 临时文件
+*.tmp
+*.temp
+*.log
+
+# 逆向工程临时文件
+*.idb
+*.i64
+*.gpr
+*.rep
+
+# 调试输出
+Debug/
+Release/
+x64/
+x86/
+
+# 包管理
+packages/
+node_modules/
+
+# 构建目录
+build/
+dist/
+out/
