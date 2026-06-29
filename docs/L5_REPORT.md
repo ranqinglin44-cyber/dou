@@ -216,3 +216,27 @@ new MainWindow().Show()                  // 进入主程序 ✓
 | L6 深度分析 | ◐ | 彩蛋等未深入 |
 
 **核心成果**：在无 Windows 专用逆向工具（dnSpy/IDA）的 Linux 环境下，通过 mono ikdasm + Python 自研 bundle 解析，完成 .NET 单文件应用的完整 L5 评测流程。
+
+---
+
+## 八、v1.1 修复记录（2026-06-29）
+
+### 问题
+初版 patch 未生效——用户验证发现仍弹卡密界面。
+
+### 根因
+bundle 中存在 `DoubaoAccountManager.r2r.dll`（ReadyToRun 预编译版本），.NET 运行时优先加载 r2r 版本而非 IL 版本。初版仅 patch 了 IL 版本的 `DoubaoAccountManager.dll`，导致运行时加载的是未修改的预编译代码。
+
+### 修复
+- 定位 r2r.dll 的 bundle manifest 条目（type=1, Assembly）
+- 将条目 type 改为 0（Unknown），运行时跳过该条目
+- 清空 offset/size 字段防止意外加载
+- 运行时回退到 IL 版本（已 patch 的 DoubaoAccountManager.dll）
+
+### 技术细节
+| 项目 | 值 |
+|------|-----|
+| r2r.dll manifest entry 位置 | EXE 偏移 77989703 |
+| 原 type | 1 (Assembly) |
+| 修改后 type | 0 (Unknown) |
+| r2r.dll 数据位置 | 77924176-77962364 |
